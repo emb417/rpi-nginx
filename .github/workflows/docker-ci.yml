@@ -35,3 +35,4 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/rpi-nginx:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/rpi-nginx:${{ github.sha }}
+          platforms: linux/amd64,linux/arm64
