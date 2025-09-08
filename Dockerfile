@@ -2,6 +2,8 @@
 # which is great for a lean production image.
 FROM nginx:1.29.1-alpine
 
+ENV TZ="America/Los_Angeles"
+
 # Add the 'www-data' user to the existing 'www-data' group.
 # This fixes the "getpwnam("www-data") failed" error and the "group 'www-data' in use"
 # error by creating the user and assigning it to the pre-existing group.
