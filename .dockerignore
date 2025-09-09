@@ -1,0 +1,12 @@
+# Ignore git files
+.git
+.gitignore
+
+# Ignore github files
+.github/
+
+# Ignore log files
+*.log
+
+# Ignore macOS specific files
+.DS_Store
