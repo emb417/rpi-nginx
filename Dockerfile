@@ -42,11 +42,4 @@ EXPOSE 80
 EXPOSE 443
 
 # Start Nginx
-CMD ["/bin/sh", "-c", "\
-    nginx -g 'daemon off;' & \
-    NGINX_PID=$!; \
-    inotifywait -m -e modify,create,move,delete /etc/letsencrypt/ --recursive | \
-    while read; do \
-    nginx -s reload; \
-    done \
-    "]
+CMD ["nginx", "-g", "daemon off;"]
