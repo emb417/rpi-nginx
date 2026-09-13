@@ -22,6 +22,13 @@ RUN mkdir -p /var/run/nginx \
 # to ensure our custom configuration is the only one used.
 RUN rm /etc/nginx/conf.d/default.conf
 
+# Remove the default Nginx log files.
+RUN rm -f /var/log/nginx/access.log /var/log/nginx/error.log
+
+# Create a dedicated directory for Nginx's log files and give it the correct permissions.
+RUN mkdir -p /var/log/nginx \
+    && chown -R www-data:www-data /var/log/nginx
+
 # Copy our custom main nginx.conf file into the container.
 # This file will act as the entry point for all other configurations.
 COPY ./nginx.conf /etc/nginx/nginx.conf
