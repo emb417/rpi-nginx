@@ -1,5 +1,5 @@
 # Use the official Nginx base image. The "alpine" variant is very small.
-FROM nginx:1.29.4-alpine
+FROM nginx:stable-alpine
 
 ENV TZ="America/Los_Angeles"
 
@@ -31,8 +31,15 @@ RUN mkdir -p /etc/nginx/conf.d/includes
 
 # Copy our custom configuration files into the container.
 COPY ./conf.d/includes/* /etc/nginx/conf.d/includes/.
-COPY ./conf.d/maps/* /etc/nginx/conf.d/maps/.
+COPY ./conf.d/security/* /etc/nginx/conf.d/security/.
 COPY ./conf.d/*.conf /etc/nginx/conf.d/.
+
+# Download the list of Cloudflare IPs and create a configuration file to set the real IP from Cloudflare.
+RUN curl -s https://www.cloudflare.com/ips-v4 | sed 's/^/set_real_ip_from /;s/$/;/' > /etc/nginx/conf.d/security/cloudflare-realip.conf \
+    && echo "" >> /etc/nginx/conf.d/security/cloudflare-realip.conf \
+    && curl -s https://www.cloudflare.com/ips-v6 | sed 's/^/set_real_ip_from /;s/$/;/' >> /etc/nginx/conf.d/security/cloudflare-realip.conf \
+    && echo "" >> /etc/nginx/conf.d/security/cloudflare-realip.conf \
+    && echo "real_ip_header CF-Connecting-IP;" >> /etc/nginx/conf.d/security/cloudflare-realip.conf
 
 # Set the user to 'www-data' so Nginx runs with the correct permissions.
 USER www-data
